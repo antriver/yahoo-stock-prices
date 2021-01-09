@@ -69,10 +69,12 @@ const getCurrentData = function (ticker) {
             }
 
             try {
-                const price = parseFloat(body.split(`"${ticker}":{"sourceInterval"`)[1]
+                let price = body.split(`"${ticker}":{"sourceInterval"`)[1]
                     .split('regularMarketPrice')[1]
                     .split('fmt":"')[1]
-                    .split('"')[0]);
+                    .split('"')[0];
+
+                price = parseFloat(price.replace(',', ''));
 
                 const currencyMatch = body.match(/Currency in ([A-Za-z]{3})/);
                 let currency = null;

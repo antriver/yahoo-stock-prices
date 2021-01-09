@@ -32,6 +32,18 @@ describe('yahoo-stock-prices', () => {
                 expect(price).toBeLessThan(10000);
             });
         });
+
+        it('Should return price that includes a comma', () => {
+            // At the time of writing, TSLA.MX is priced at 17,513.22. This test checks what happens with the comma.
+            return ysp.getCurrentPrice('TSLA.MX').then((price) => {
+                console.log('TSLA.MX price', price);
+                expect(typeof price).toBe('number');
+                expect(price).toBeGreaterThan(1000);
+                // Test will break if TSLA.MX price drops below 1,000. Switch to a different >= 1,000 stock if that happens.
+                expect(price.toString().split('.')[0].length).toBeGreaterThanOrEqual(4);
+                expect(price.toString().split('.')[1].length).toBe(2);
+            });
+        });
     });
 
     describe('getCurrentData', () => {
